@@ -27,6 +27,11 @@ void objPosArrayList::insertHead(objPos thisPos)
     // check if listSize is equal to arrayCapacity.
     // if yes, at capacity,don't insert.
 
+    if(listSize == arrayCapacity)
+    {
+        return;
+    }
+    
     for(int i = listSize; i > 0; i--)
     {
         aList[i].setObjPos(aList[i-1]); // this will shuffle all the elements toward the tail

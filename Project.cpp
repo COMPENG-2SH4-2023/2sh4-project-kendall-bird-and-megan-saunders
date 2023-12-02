@@ -52,6 +52,11 @@ void Initialize(void)
     
     myGM = new GameMechs(26, 13); // make board size 26x13
     myPlayer = new Player(myGM);
+
+    // Think about when to generate the new food
+    // Think about whether you want to set up a debug key to call the food generation routine for verification
+    // remember, generate food requires player reference. You will need to provide it after player object is instantiated
+
 }
 
 void GetInput(void)
@@ -95,9 +100,9 @@ void DrawScreen(void)
     }
     // Bcus we are using the async input in MacUILib, we have to use MacUILib_printf() instead of cout
 
-    //MacUILib_printf("Score: %d, Player Pos: <%d, %d>\n",
-                    //myGM->getScore(),
-                    //tempPos.x, tempPos.y);
+    MacUILib_printf("Score: %d, Player Pos: <%d, %d>\n",
+                    myGM->getScore(),
+                    tempPos.x, tempPos.y);
 
 }
 
