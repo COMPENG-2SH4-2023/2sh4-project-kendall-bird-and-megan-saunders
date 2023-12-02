@@ -9,6 +9,8 @@ using namespace std;
 
 #define DELAY_CONST 100000
 
+// OOD Benefit - very limited global var declaration
+// In advanced OOD, don't even need global variable
 GameMechs* myGM;
 Player* myPlayer;
 
@@ -54,12 +56,15 @@ void Initialize(void)
 
 void GetInput(void)
 {
-   
+   myGM->getInput();
 }
 
 void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
+    myPlayer->movePlayer();
+
+    myGM->clearInput();
 }
 
 void DrawScreen(void)
@@ -69,11 +74,30 @@ void DrawScreen(void)
     objPos tempPos;
     myPlayer->getPlayerPos(tempPos); //get player pos
 
-    MacUILib_printf("Board Size: %dx%d, Player Pos: <%d, %d> + %c\n", 
-        myGM->getBoardSizeX(), 
-        myGM->getBoardSizeY(),
-        tempPos.x, tempPos.y, tempPos.symbol); 
+    for(int i=0; i < myGM->getBoardSizeY(); i++)
+    {
+        for(int j=0; j < myGM->getBoardSizeX(); j++)
+        {
+            if(i==0 || i == myGM->getBoardSizeY() - 1 || j==0 || j == myGM->getBoardSizeX() - 1)
+            {
+                printf("%c", '#');
+            }
+            else if(j == tempPos.x && i == tempPos.y)
+            {
+                printf("%c", tempPos.symbol);
+            }
+            else
+            {
+                printf("%c", ' ');
+            }
+        }
+        printf("\n");
+    }
     // Bcus we are using the async input in MacUILib, we have to use MacUILib_printf() instead of cout
+
+    //MacUILib_printf("Score: %d, Player Pos: <%d, %d>\n",
+                    //myGM->getScore(),
+                    //tempPos.x, tempPos.y);
 
 }
 
@@ -88,4 +112,8 @@ void CleanUp(void)
     MacUILib_clearScreen();    
   
     MacUILib_uninit();
+
+    // remove heap instances
+    delete myGM;
+    delete myPlayer;
 }
