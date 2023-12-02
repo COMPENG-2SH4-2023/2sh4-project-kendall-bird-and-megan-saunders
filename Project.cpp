@@ -1,13 +1,20 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
+#include "GameMechs.h"
+#include "Player.h"
 
 
 using namespace std;
 
 #define DELAY_CONST 100000
 
-bool exitFlag;
+GameMechs* myGM;
+Player* myPlayer;
+
+// objPos myPos; (he wrote then deleted this - may need to uncomment)
+
+//bool exitFlag; (he deleted this in vid)
 
 void Initialize(void);
 void GetInput(void);
@@ -23,7 +30,7 @@ int main(void)
 
     Initialize();
 
-    while(exitFlag == false)  
+    while(myGM->getExitFlagStatus() == false)  
     {
         GetInput();
         RunLogic();
@@ -40,8 +47,9 @@ void Initialize(void)
 {
     MacUILib_init();
     MacUILib_clearScreen();
-
-    exitFlag = false;
+    
+    myGM = new GameMechs(26, 13); // make board size 26x13
+    myPlayer = new Player(myGM);
 }
 
 void GetInput(void)
@@ -51,12 +59,21 @@ void GetInput(void)
 
 void RunLogic(void)
 {
-    
+    myPlayer->updatePlayerDir();
 }
 
 void DrawScreen(void)
 {
-    MacUILib_clearScreen();    
+    MacUILib_clearScreen();
+
+    objPos tempPos;
+    myPlayer->getPlayerPos(tempPos); //get player pos
+
+    MacUILib_printf("Board Size: %dx%d, Player Pos: <%d, %d> + %c\n", 
+        myGM->getBoardSizeX(), 
+        myGM->getBoardSizeY(),
+        tempPos.x, tempPos.y, tempPos.symbol); 
+    // Bcus we are using the async input in MacUILib, we have to use MacUILib_printf() instead of cout
 
 }
 
