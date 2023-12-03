@@ -125,7 +125,22 @@ void DrawScreen(void)
     }
     // Bcus we are using the async input in MacUILib, we have to use MacUILib_printf() instead of cout
 
-    MacUILib_printf("Score: %d\n", myGM->getScore());
+    if (myGM->getLoseFlagStatus())
+    {
+        MacUILib_clearScreen();
+        MacUILib_printf("You lost!\n");
+        MacUILib_Delay(999999999);
+    }
+    else if (myGM->getExitFlagStatus())
+    {
+        MacUILib_clearScreen();
+        MacUILib_printf("You have exited the game.\n");
+        MacUILib_Delay(999999999);
+    }
+    else
+    {
+        MacUILib_printf("Score: %d\n", myGM->getScore());
+    }
 
     //MacUILib_printf("Food Pos: <%d,%d>\n", tempFoodPos.x, tempFoodPos.y);
 

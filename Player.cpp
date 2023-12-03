@@ -86,8 +86,15 @@ void Player::movePlayer()
  
     objPos currentHead; // holding the pos information of the current head
     playerPosList->getHeadElement(currentHead);
- 
-    switch(myDir)
+    
+    if(checkSelfCollision())
+    {
+        mainGameMechsRef->setLoseFlag();
+        mainGameMechsRef->setExitTrue();
+    }
+    else
+    {
+        switch(myDir)
     {
         case UP:
             currentHead.y--;
@@ -125,7 +132,8 @@ void Player::movePlayer()
         default:
             break;
     }
- 
+
+
     if(checkFoodConsumption())
     {
         // Food consumed, no need to remove the tail
@@ -137,6 +145,7 @@ void Player::movePlayer()
  
     // then, remove tail
     playerPosList->removeTail();
+    }
     }
 
 }
@@ -165,12 +174,6 @@ bool Player::checkFoodConsumption()
 
 void Player::increasePlayerLength()
 {
-    // objPos currentHead;
-    // playerPosList->getHeadElement(currentHead);
-
-    // objPos newHead = currentHead;
-    // playerPosList->insertHead(newHead);
-
     objPos currentHead;
     playerPosList->getHeadElement(currentHead);
     playerPosList->insertHead(currentHead);
@@ -180,6 +183,32 @@ void Player::increasePlayerLength()
 
 bool Player::checkSelfCollision()
 {
+    int arraysize = playerPosList->getSize();
     
-}
+    objPos headPos;
+    playerPosList->getHeadElement(headPos);
 
+    for (int i = 1; i < arraysize; i++) //start at 1 because head is at position 0
+    {
+        objPos bodySegment;
+        playerPosList->getElement(bodySegment, i);
+        
+        if (headPos.isPosEqual(&bodySegment))
+        {
+            return true; // Collision with body detected
+        }
+    }
+
+    objPos foodPosRef;
+    mainGameMechsRef->getFoodPos(foodPosRef);
+    
+    if (headPos.isPosEqual(&foodPosRef))
+    {
+        // Collision with food
+        increasePlayerLength();
+        mainGameMechsRef->generateFood(headPos);
+        return false; // No collision with body
+    }
+
+    return false; // No collision
+}
