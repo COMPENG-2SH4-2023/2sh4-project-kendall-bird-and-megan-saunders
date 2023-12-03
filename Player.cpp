@@ -14,7 +14,7 @@ Player::Player(GameMechs* thisGMRef)
 
     // no heap member yet - never used new keyword
     playerPosList = new objPosArrayList();
-    playerPosList.insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
 }
 
 
@@ -85,40 +85,40 @@ void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
 
-    objPos currHead; // holding the pos information of the current head
-    playerPosList.getHeadElement(currHead);
+    objPos currentHead; // holding the pos information of the current head
+    playerPosList->getHeadElement(currentHead);
 
     switch(myDir)
     {
         case UP:
-            currHead.y--;
-            if(currHead.y <= 0)
+            currentHead.y--;
+            if(currentHead.y <= 0)
             {
-                currHead.y = mainGameMechsRef->getBoardSizeY() - 2;
+                currentHead.y = mainGameMechsRef->getBoardSizeY() - 2;
             }
             break;
         
         case DOWN:
-            currHead.y++;
-            if(currHead.y >= mainGameMechsRef->getBoardSizeY())
+            currentHead.y++;
+            if(currentHead.y >= mainGameMechsRef->getBoardSizeY())
             {
-                currHead.y = 1;
+                currentHead.y = 1;
             }
             break;
 
         case LEFT:
-            currHead.x--;
-            if(currHead.x <= 0)
+            currentHead.x--;
+            if(currentHead.x <= 0)
             {
-                currHead.x = mainGameMechsRef->getBoardSizeX() -2;
+                currentHead.x = mainGameMechsRef->getBoardSizeX() -2;
             }    
             break;
         
         case RIGHT:
-            currHead.x++;
-            if(currHead.x >= mainGameMechsRef->getBoardSizeX())
+            currentHead.x++;
+            if(currentHead.x >= mainGameMechsRef->getBoardSizeX())
             {
-                currHead.x = 1;
+                currentHead.x = 1;
             }
             break;
         
@@ -126,6 +126,12 @@ void Player::movePlayer()
         default:
             break;
     }
+
+    // new current head should be inserted to the head of the list
+    playerPosList->insertHead(currentHead);
+
+    // then, remove tail
+    playerPosList->removeTail();
 
 }
 

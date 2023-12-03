@@ -39,7 +39,7 @@ class GameMechs
         void setLoseFlag();
 
         int getScore();
-        void incrementScore();
+        int incrementScore();
 
         char getInput();
         void setInput(char this_input);
@@ -48,7 +48,11 @@ class GameMechs
         int getBoardSizeX();
         int getBoardSizeY();
 
-        void generateFood(objPos blockOff);
+        void generateFood(objPos blockOff); // you need to upgrade this somehow
+        // Need to accept the player body array list
+        // go through each array list element to make sure they are all
+        // blocked off from random food generation
+
         void getFoodPos(objPos &returnPos);
 };
 

@@ -91,9 +91,19 @@ void GameMechs::generateFood(objPos blockOff)
     // check x and y against 0 and baordSizeX/ Y
     // remember, in objPos class you have an isPosEqual() method.
     // Use this instead of comparing element by element for your convenience
+
+    objPos candPos{0, 0, 'o'};
+
+    do
+    {
+        candPos.x = rand() % (boardSizeX - 2) + 1;
+        candPos.y = rand() % (boardSizeY - 2) + 1;
+    }while(candPos.isPosEqual(&blockOff));
+
+    foodPos.setObjPos(candPos);
 }
 
 void GameMechs::getFoodPos(objPos &returnPos)
 {
-
+    returnPos.setObjPos(foodPos);
 }
