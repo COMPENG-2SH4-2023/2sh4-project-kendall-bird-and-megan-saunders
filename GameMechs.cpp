@@ -6,6 +6,7 @@
 GameMechs::GameMechs()
 {
     input = 0;
+    score = 0;
     exitFlag = false;
     loseFlag = false;
     boardSizeX = 20; //default board size
@@ -17,6 +18,7 @@ GameMechs::GameMechs()
 GameMechs::GameMechs(int boardX, int boardY)
 {
     input = 0;
+    score = 0;
     exitFlag = false;
     loseFlag = false;
     boardSizeX = boardX; //default board size
@@ -43,6 +45,7 @@ char GameMechs::getInput()
         if(input == 32)
         {
             exitFlag = true;
+            MacUILib_printf("\nGame Over");
         }
     }
 

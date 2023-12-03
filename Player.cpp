@@ -128,7 +128,7 @@ void Player::movePlayer()
  
     if(checkFoodConsumption())
     {
-        //// Food consumed, no need to remove the tail
+        // Food consumed, no need to remove the tail
     }
     else
     {
@@ -174,6 +174,8 @@ void Player::increasePlayerLength()
     objPos currentHead;
     playerPosList->getHeadElement(currentHead);
     playerPosList->insertHead(currentHead);
+
+    mainGameMechsRef->incrementScore();
 }
 
 bool Player::checkSelfCollision()

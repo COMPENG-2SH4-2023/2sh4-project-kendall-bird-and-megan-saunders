@@ -127,7 +127,7 @@ void DrawScreen(void)
 
     MacUILib_printf("Score: %d\n", myGM->getScore());
 
-    MacUILib_printf("Food Pos: <%d,%d>\n", tempFoodPos.x, tempFoodPos.y);
+    //MacUILib_printf("Food Pos: <%d,%d>\n", tempFoodPos.x, tempFoodPos.y);
 
 }
 
