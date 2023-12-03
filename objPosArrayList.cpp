@@ -18,7 +18,9 @@ objPosArrayList::objPosArrayList()
 
 objPosArrayList::~objPosArrayList()
 {
-    delete[] aList; // use delete[] to call the destructors of all instances in the array (otherwise memory leak - only 1st element will be properly deleted)
+    // use delete[] to call the destructors of all instances in the array 
+    // (otherwise memory leak - only 1st element will be properly deleted)
+    delete[] aList;
 }
 
 int objPosArrayList::getSize()
@@ -28,11 +30,8 @@ int objPosArrayList::getSize()
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
-    // ADD IN CODE:
-    // still need error check - what if listSize is at capacity?
-    // check if listSize is equal to arrayCapacity.
-    // if yes, at capacity,don't insert.
-
+    // check if listSize is equal to arrayCapacity. 
+    // If it is at capacity, don't insert head:
     if(listSize == arrayCapacity)
     {
         return;
@@ -40,9 +39,11 @@ void objPosArrayList::insertHead(objPos thisPos)
     
     for(int i = listSize; i > 0; i--)
     {
-        aList[i].setObjPos(aList[i-1]); // this will shuffle all the elements toward the tail
+        // this will shuffle all the elements toward the tail
+        aList[i].setObjPos(aList[i-1]);
     }
 
+    // Set the new head at the beginning of the list
     aList[0].setObjPos(thisPos);
 
     listSize++;
@@ -50,11 +51,13 @@ void objPosArrayList::insertHead(objPos thisPos)
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
+    // Add a new element at the end of the list and increment the size
     aList[listSize++] = thisPos;
 }
 
 void objPosArrayList::removeHead()
 {
+    // Shift all elements toward the head to remove the first element
     for(int i = 0; i < listSize - 1; i++)
     {
         aList[i] = aList[i + 1];  // shuffling towards the head
@@ -64,20 +67,24 @@ void objPosArrayList::removeHead()
 
 void objPosArrayList::removeTail()
 {
+    // Decrement the list size to effectively remove the last element
     listSize--; 
 }
 
 void objPosArrayList::getHeadElement(objPos &returnPos)
 {
+    // Get the objPos of the first element in the list
     returnPos.setObjPos(aList[0]);
 }
 
 void objPosArrayList::getTailElement(objPos &returnPos)
 {
+    // Get the objPos of the last element in the list
     returnPos.setObjPos(aList[listSize -1]);
 }
 
 void objPosArrayList::getElement(objPos &returnPos, int index)
 {
+    // Get the objPos at the specified index in the list
     returnPos.setObjPos(aList[index]);
 }

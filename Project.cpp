@@ -10,15 +10,10 @@ using namespace std;
 
 #define DELAY_CONST 100000
 
-// OOD Benefit - very limited global var declaration
-// In advanced OOD, don't even need global variable
-GameMechs* myGM;
-Player* myPlayer;
+GameMechs* myGM; //pointer to GameMechanics
+Player* myPlayer; //pointer to Player
 
-// objPos myPos; (he wrote then deleted this - may need to uncomment)
-
-//bool exitFlag; (he deleted this in vid)
-
+//function prototypes
 void Initialize(void);
 void GetInput(void);
 void RunLogic(void);
@@ -51,27 +46,22 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
     
-    myGM = new GameMechs(26, 13); // make board size 26x13
-    myPlayer = new Player(myGM);
+    myGM = new GameMechs(26, 13); // sets board size to 26x13
+    myPlayer = new Player(myGM); //creates player instance
 
-    // Think about when to generate the new food
-    // Think about whether you want to set up a debug key to call the food generation routine for verification
-    // remember, generate food requires player reference. You will need to provide it after player object is instantiated
-    // this is a makeshift setup so i dont have to touch generateItem yet
-    // you need to do this yourself 
-    objPos tempPos{-1, -1, 'o'}; // REMOVE this in future steps
-    myGM->generateFood(tempPos);
+    objPos tempPos{-1, -1, 'o'};
+    myGM->generateFood(tempPos); //generates initial food position
 }
 
 void GetInput(void)
 {
-   myGM->getInput();
+   myGM->getInput(); //references game mechanics to get user input
 }
 
 void RunLogic(void)
 {
-    myPlayer->updatePlayerDir();
-    myPlayer->movePlayer();
+    myPlayer->updatePlayerDir(); //updates player direction based on input
+    myPlayer->movePlayer(); 
 
     myGM->clearInput();
 }
@@ -93,7 +83,7 @@ void DrawScreen(void)
         for(int j=0; j < myGM->getBoardSizeX(); j++)
         {
             drawn = false;
-            // iterate thru every element in the list
+            // iterates through every element in the player's body list
             for(int k = 0; k < playerBody->getSize(); k++)
             {
                 playerBody->getElement(tempBody, k);
@@ -106,40 +96,38 @@ void DrawScreen(void)
             }
 
             if(drawn) continue;
-            // if player body was drawn, don't draw anything below.
+            // if player body was drawn, don't draw anything below
 
             if(i==0 || i == myGM->getBoardSizeY() - 1 || j==0 || j == myGM->getBoardSizeX() - 1)
             {
-                MacUILib_printf("%c", '#');
+                MacUILib_printf("%c", '#'); //prints borders
             }
             else if(j == tempFoodPos.x && i == tempFoodPos.y)
             {
-                MacUILib_printf("%c", tempFoodPos.symbol);
+                MacUILib_printf("%c", tempFoodPos.symbol); //prints food
             }
             else
             {
-                MacUILib_printf("%c", ' ');
+                MacUILib_printf("%c", ' '); //prints empty space
             }
         }
         printf("\n");
     }
-    // Bcus we are using the async input in MacUILib, we have to use MacUILib_printf() instead of cout
+    // b/c we are using the async input in MacUILib, we have to use MacUILib_printf() instead of cout
 
-    if (myGM->getLoseFlagStatus())
+    if (myGM->getLoseFlagStatus()) //message for if game is lost
     {
         MacUILib_clearScreen();
-        MacUILib_printf("You lost!\n");
-        MacUILib_Delay(999999999);
+        MacUILib_printf("Good Try! You lost!\n");
     }
-    else if (myGM->getExitFlagStatus())
+    else if (myGM->getExitFlagStatus()) //message for if game is exited, NOT lost
     {
         MacUILib_clearScreen();
-        MacUILib_printf("You have exited the game.\n");
-        MacUILib_Delay(999999999);
+        MacUILib_printf("You have exited the game!\n");
     }
     else
     {
-        MacUILib_printf("Score: %d\n", myGM->getScore());
+        MacUILib_printf("Score: %d\n", myGM->getScore()); //prints player's score
     }
 
     //MacUILib_printf("Food Pos: <%d,%d>\n", tempFoodPos.x, tempFoodPos.y);
@@ -153,9 +141,7 @@ void LoopDelay(void)
 
 
 void CleanUp(void)
-{
-    MacUILib_clearScreen();    
-  
+{  
     MacUILib_uninit();
 
     // remove heap instances

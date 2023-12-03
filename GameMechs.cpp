@@ -1,123 +1,130 @@
 #include "GameMechs.h"
 #include "MacUILib.h"
 
-// think about where to see the RNG
-
+//defaut constructor for the game mechanics, initalizes the variables & sets board size
 GameMechs::GameMechs()
 {
     input = 0;
     score = 0;
     exitFlag = false;
     loseFlag = false;
-    boardSizeX = 20; //default board size
+    //default board size
+    boardSizeX = 20;
     boardSizeY = 10;
-
-    foodPos.setObjPos(-1, -1, 'o'); // initialize foodPos outside of game board (so to not be displayed)
+ 
+    foodPos.setObjPos(-1, -1, 'o'); // initializes foodPos outside of game board (so it is not displayed)
 }
-
+ 
+//overloaded constructor for the game mechanics with the board parameters being input values
 GameMechs::GameMechs(int boardX, int boardY)
 {
     input = 0;
     score = 0;
     exitFlag = false;
     loseFlag = false;
-    boardSizeX = boardX; //default board size
+    //custom board size
+    boardSizeX = boardX;
     boardSizeY = boardY;
-
-    foodPos.setObjPos(-1, -1, 'o'); // initialize foodPos outside of game board (so to not be displayed)
+ 
+    foodPos.setObjPos(-1, -1, 'o'); // initializes foodPos outside of game board (so it is not displayed)
 }
-
-// do you need a destructor?
-
-
-
+ 
+//returns exit flag status, self explanatory
 bool GameMechs::getExitFlagStatus()
 {
     return exitFlag;
 }
-
+ 
+//sets the exit flag to true, signalling for the program to end
+void GameMechs::setExitTrue()
+{
+    exitFlag = true;
+}
+ 
+ 
+//returns lose flag status, self explanatory
+bool GameMechs::getLoseFlagStatus()
+{
+    return loseFlag;
+}
+ 
+//sets loseflag to true, signalling for program to end
+void GameMechs::setLoseFlag()
+{
+    loseFlag = true;
+}
+ 
+//returns the current game score
+int GameMechs::getScore()
+{
+    return score;
+}
+ 
+//increments the score by one
+int GameMechs::incrementScore()
+{
+    score++;
+}
+ 
+//takes in user input & checks for the space key to exit out of the game, returns input
 char GameMechs::getInput()
 {
     if (MacUILib_hasChar())
     {
         input = MacUILib_getChar();
-
+ 
         if(input == 32)
         {
             exitFlag = true;
             MacUILib_printf("\nGame Over");
         }
     }
-
+ 
     return input;
 }
-
-int GameMechs::getBoardSizeX()
-{
-    return boardSizeX;
-}
-
-int GameMechs::getBoardSizeY()
-{
-    return boardSizeY;
-}
-
-
-void GameMechs::setExitTrue()
-{
-    exitFlag = true;
-}
-
+ 
+//sets the input variable with the provided character
 void GameMechs::setInput(char this_input)
 {
     input = this_input;
 }
-
+ 
+//clears previously stored input
 void GameMechs::clearInput()
 {
     input = 0;
 }
-
-int GameMechs::getScore()
+ 
+//returns horizontal size of game board, self explanatory
+int GameMechs::getBoardSizeX()
 {
-    return score;
+    return boardSizeX;
 }
-
-int GameMechs::incrementScore()
+ 
+//returns vertical size of game board, self explanatory
+int GameMechs::getBoardSizeY()
 {
-    score++;
+    return boardSizeY;
 }
-
+ 
+//generates a food object with coordinates that don't interfere with the border
+//or the snake's body position
 void GameMechs::generateFood(objPos blockOff)
 {
-    // generate random x and y coord and make sure they are not border or blockOff pos
-    // check x and y against 0 and baordSizeX/ Y
-    // remember, in objPos class you have an isPosEqual() method.
-    // Use this instead of comparing element by element for your convenience
-
+ 
     objPos candPos{0, 0, 'o'};
-
+ 
     do
     {
         candPos.x = rand() % (boardSizeX - 2) + 1;
         candPos.y = rand() % (boardSizeY - 2) + 1;
     }while(candPos.isPosEqual(&blockOff));
-
+ 
     foodPos.setObjPos(candPos);   
 }
-
+ 
+//returns the current food position
 void GameMechs::getFoodPos(objPos &returnPos)
 {
     returnPos.setObjPos(foodPos);
-}
-
-bool GameMechs::getLoseFlagStatus()
-{
-    return loseFlag;
-}
-
-
-void GameMechs::setLoseFlag()
-{
-    loseFlag = true;
 }

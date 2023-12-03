@@ -2,45 +2,41 @@
 
 Player::Player(GameMechs* thisGMRef)
 {
+    // Set the reference to the GameMechs object
     mainGameMechsRef = thisGMRef;
+    // Initialize the player's direction as STOP
     myDir = STOP;
 
-    // more actions to be included
+    // Set initial position at the center of the board
     objPos tempPos;
     tempPos.setObjPos(mainGameMechsRef->getBoardSizeX() / 2, 
                 mainGameMechsRef->getBoardSizeY() / 2, 
                 '*');
 
-    // no heap member yet - never used new keyword
+    // Create a new objPosArrayList for the player's position
     playerPosList = new objPosArrayList();
+    
+    // Insert the initial position at the head
     playerPosList->insertHead(tempPos);
 }
 
 
 Player::~Player()
 {
-    // delete any heap members here
-    // leave empty for iteration 1
+    // Delete heap members to prevent memory leak
     delete playerPosList;
 }
 
 objPosArrayList* Player::getPlayerPos()
 {
-    // iteration 3 - get rid of this - returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
-    // return the reference to the playerPos arrray list
+    // Return the reference to the playerPos arrray list
     return playerPosList;
 }
 
 void Player::updatePlayerDir()
 {
     // PPA3 input processing logic  
-
-    // where do i get the input? how to check for input?
-    // hint 1) not by calling MacUILib_getChar()
-    // hint 2) coordinate w team member designing GameMechanism class
-    // there will be a method in GameMechanism class that 
-    // collectively checks input and store the most recent input. You just need to figure out how to get to it
-    // how?? it lies within the GameMechs* inside your private member
+    // Process player input and update the player's direction accordingly
 
     char input = mainGameMechsRef->getInput();
 
@@ -84,16 +80,19 @@ void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
  
-    objPos currentHead; // holding the pos information of the current head
+    // Holding the pos information of the current head:
+    objPos currentHead;
     playerPosList->getHeadElement(currentHead);
     
     if(checkSelfCollision())
     {
+        // Set lose and exit flags if self-collision detected
         mainGameMechsRef->setLoseFlag();
         mainGameMechsRef->setExitTrue();
     }
     else
     {
+        // Update position based on the current direction
         switch(myDir)
     {
         case UP:
@@ -140,10 +139,10 @@ void Player::movePlayer()
     }
     else
     {
-    // new current head should be inserted to the head of the list
+    // New head should be inserted to the head of the list:
     playerPosList->insertHead(currentHead);
  
-    // then, remove tail
+    // then, remove tail:
     playerPosList->removeTail();
     }
     }
@@ -161,6 +160,7 @@ bool Player::checkFoodConsumption()
  
     if(headPos.isPosEqual(&foodPosRef))
     {
+        // Increase player length and generate new food if collision with food detected
         increasePlayerLength();
         mainGameMechsRef->generateFood(headPos);
         return true;
