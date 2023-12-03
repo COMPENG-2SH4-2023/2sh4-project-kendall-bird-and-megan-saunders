@@ -128,6 +128,7 @@ void DrawScreen(void)
     else
     {
         MacUILib_printf("Score: %d\n", myGM->getScore()); //prints player's score
+        MacUILib_printf("Press SPACE to exit.");
     }
 
     //MacUILib_printf("Food Pos: <%d,%d>\n", tempFoodPos.x, tempFoodPos.y);
