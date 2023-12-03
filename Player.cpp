@@ -1,6 +1,5 @@
 #include "Player.h"
 
-
 Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
@@ -10,7 +9,7 @@ Player::Player(GameMechs* thisGMRef)
     objPos tempPos;
     tempPos.setObjPos(mainGameMechsRef->getBoardSizeX() / 2, 
                 mainGameMechsRef->getBoardSizeY() / 2, 
-                '@');
+                '*');
 
     // no heap member yet - never used new keyword
     playerPosList = new objPosArrayList();
@@ -84,10 +83,10 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
-
+ 
     objPos currentHead; // holding the pos information of the current head
     playerPosList->getHeadElement(currentHead);
-
+ 
     switch(myDir)
     {
         case UP:
@@ -105,7 +104,7 @@ void Player::movePlayer()
                 currentHead.y = 1;
             }
             break;
-
+ 
         case LEFT:
             currentHead.x--;
             if(currentHead.x <= 0)
@@ -126,12 +125,72 @@ void Player::movePlayer()
         default:
             break;
     }
-
+ 
+    if(checkFoodConsumption())
+    {
+        //// Food consumed, no need to remove the tail
+    }
+    else
+    {
     // new current head should be inserted to the head of the list
     playerPosList->insertHead(currentHead);
-
+ 
     // then, remove tail
     playerPosList->removeTail();
+    }
 
+}
+
+bool Player::checkFoodConsumption()
+{
+    objPos headPos;
+    objPos currentHead;
+    objPos foodPosRef;
+    mainGameMechsRef->getFoodPos(foodPosRef);
+    playerPosList->getHeadElement(currentHead);
+    playerPosList->getHeadElement(headPos);
+ 
+    if(headPos.isPosEqual(&foodPosRef))
+    {
+        increasePlayerLength();
+        mainGameMechsRef->generateFood(headPos);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+
+void Player::increasePlayerLength()
+{
+    // objPos currentHead;
+    // playerPosList->getHeadElement(currentHead);
+
+    // objPos newHead = currentHead;
+    // playerPosList->insertHead(newHead);
+
+    objPos currentHead;
+    playerPosList->getHeadElement(currentHead);
+    playerPosList->insertHead(currentHead);
+}
+
+bool Player::checkSelfCollision()
+{
+    objPos currentHead;
+    playerPosList->getHeadElement(currentHead);
+
+    for (int i = 1; i < playerPosList->getSize(); i++)
+    {
+        objPos bodyPart;
+        playerPosList->getElement(bodyPart, i);
+
+        if (currentHead.isPosEqual(&bodyPart))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 

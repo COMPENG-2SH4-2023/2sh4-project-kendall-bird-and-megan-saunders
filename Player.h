@@ -37,6 +37,9 @@ class Player
         // - if ending, you need to differentiate the end game state
         // LOST - display LOST message!
         // otherwise, display ENDGAME message only. 
+        bool checkFoodConsumption();
+        void increasePlayerLength();
+        bool checkSelfCollision();
 
     private:
         objPosArrayList *playerPosList;   // Upgrade this in iteration 3 to an AL.       
