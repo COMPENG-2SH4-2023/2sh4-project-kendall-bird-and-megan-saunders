@@ -44,7 +44,6 @@ class Player
     private:
         objPosArrayList *playerPosList;   // Upgrade this in iteration 3 to an AL.       
         enum Dir myDir;
-
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;
 };

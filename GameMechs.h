@@ -20,14 +20,15 @@ class GameMechs
 
     private:
         char input;
-        bool exitFlag;
-        bool loseFlag;
         int score;
 
         objPos foodPos;
         
         int boardSizeX;
         int boardSizeY;
+
+        bool exitFlag;
+        bool loseFlag;
 
     public:
         GameMechs();
@@ -40,6 +41,7 @@ class GameMechs
 
         int getScore();
         int incrementScore();
+        
 
         char getInput();
         void setInput(char this_input);

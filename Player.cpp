@@ -180,6 +180,6 @@ void Player::increasePlayerLength()
 
 bool Player::checkSelfCollision()
 {
-
+    
 }
 

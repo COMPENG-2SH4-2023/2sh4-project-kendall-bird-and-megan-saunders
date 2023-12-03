@@ -110,3 +110,14 @@ void GameMechs::getFoodPos(objPos &returnPos)
 {
     returnPos.setObjPos(foodPos);
 }
+
+bool GameMechs::getLoseFlagStatus()
+{
+    return loseFlag;
+}
+
+
+void GameMechs::setLoseFlag()
+{
+    loseFlag = true;
+}
