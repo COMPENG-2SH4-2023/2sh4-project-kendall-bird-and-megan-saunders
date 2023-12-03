@@ -103,7 +103,7 @@ void GameMechs::generateFood(objPos blockOff)
         candPos.y = rand() % (boardSizeY - 2) + 1;
     }while(candPos.isPosEqual(&blockOff));
 
-    foodPos.setObjPos(candPos);
+    foodPos.setObjPos(candPos);   
 }
 
 void GameMechs::getFoodPos(objPos &returnPos)

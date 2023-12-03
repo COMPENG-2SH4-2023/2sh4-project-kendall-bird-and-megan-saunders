@@ -180,19 +180,6 @@ void Player::increasePlayerLength()
 
 bool Player::checkSelfCollision()
 {
-    objPos currentHead;
-    playerPosList->getHeadElement(currentHead);
 
-    for (int i = 1; i < playerPosList->getSize(); i++)
-    {
-        objPos bodyPart;
-        playerPosList->getElement(bodyPart, i);
-
-        if (currentHead.isPosEqual(&bodyPart))
-        {
-            return true;
-        }
-    }
-    return false;
 }
 
